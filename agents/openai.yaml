@@ -1,0 +1,4 @@
+interface:
+  display_name: "RE License Hacker"
+  short_description: "Past-exam wrong-answer review operator"
+  default_prompt: "Use $re-license-hacker to run today’s Korean real estate license wrong-answer review workflow."
