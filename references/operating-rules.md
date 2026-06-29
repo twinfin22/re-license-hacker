@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The system exists to convert repeated wrong answers from Korean licensed real estate agent past exams into reliable correct answers. It should reduce repeated mistakes, not maximize study time, chat volume, or note production.
+The system exists to operate a 300-hour conditional same-year pass plan for the Korean licensed real estate agent exam. It converts repeated wrong answers from past exams into reliable correct answers while protecting the subject score strategy.
 
 ## Non-Negotiable Rules
 
@@ -16,16 +16,18 @@ The system exists to convert repeated wrong answers from Korean licensed real es
 - Increase a first principle version when a new insight changes it.
 - Create `weekly_review.md` every Sunday.
 - Update `mock_results.md` every two weeks or after a timed past-exam set.
+- Rebalance subject time every two weeks from actual timed past-exam or mock scores.
+- At Week 8, if the first exam average is below 60, recommend switching to first-exam-only.
 
 ## Daily Input Contract
 
-The user should provide only:
+Default to minimal input mode. The user should not need to fill out a form.
 
-- study start time
-- study end time
-- units studied
-- wrong-answer photos or wrong-answer numbers
-- explicit questions, if any
+- "체크인" or equivalent means study start. Record the current timestamp automatically.
+- "오늘 하루 마무리", "마무리", or equivalent means study end. Record the current timestamp automatically.
+- During study, the user may provide only photos or short wrong-answer notes.
+- If a photo or note cannot be matched to an existing source question, ask only for the missing source clue: year, subject, chapter, or question number.
+- Do not ask for confidence, slow answers, guessed answers, tomorrow availability, or diary-style fields unless the user volunteers them.
 
 Do not demand a perfect data entry workflow. If fields are missing, proceed with `unknown` or ask only the minimum follow-up needed to avoid a bad operational decision.
 
@@ -39,14 +41,16 @@ Do not demand a perfect data entry workflow. If fields are missing, proceed with
 6. Update the review queue.
 7. Calculate review debt.
 8. Decide whether new study is locked.
-9. Generate tomorrow's plan.
-10. Answer only explicit questions.
+9. Check weekly min/max guardrails for 민법, 부동산학개론, 중개사법, 공법, and 공시법/세법.
+10. Generate tomorrow's plan.
+11. Answer only explicit questions.
 
 ## Lock Rules
 
 - Lock new study when estimated review debt exceeds 60 minutes.
 - Lock new study when more than 10 core micro-skills are overdue.
 - Prioritize 민법 and 중개사법 core lapses the next day.
+- Prioritize 공법 core lapses when they threaten the 40-point floor.
 - Mark any item with `lapse_count >= 3` as `rebuild`.
 
 ## Fragile Rules

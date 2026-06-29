@@ -1,13 +1,20 @@
 ---
 name: re-license-hacker
-description: Operate a Korean licensed real estate agent exam study system based on past-exam wrong answers, W-labeling, micro-skill tagging, review queues, review-debt locking, no-new-question rules, daily plans, weekly reviews, and biweekly recalibration. Use when managing 공인중개사 study logs, wrong_answers, review_queue, micro_skills, first_principles, mock_results, study_plan, or any Codex-run workflow for turning past-exam mistakes into repeatable correct answers.
+description: Operate a Korean licensed real estate agent exam study system for 공인중개사 wrong-answer logs, review queues, micro-skills, first principles, mock results, study plans, source matching, and reissue-safe past-exam review.
 ---
 
 # Re License Hacker
 
-Run a manual Codex operating system for the Korean licensed real estate agent exam. This is not a chat tutor; it is a wrong-answer reissue operator that keeps the learner from repeating the same past-exam mistakes.
+Run a manual Codex operating system for the Korean licensed real estate agent exam. This is not a chat tutor; it is a 300-hour conditional same-year pass operator that turns past-exam mistakes into repeatable correct answers.
 
-## Core Workflow
+## Default Strategy
+
+- Default to the 300-hour conditional same-year strategy unless the user explicitly changes the goal.
+- Keep the second-exam track only while first-exam scores stay viable.
+- Use weekly subject guardrails, timed past-exam sets, and mock results from `references/recalibration.md`.
+- At Week 8, if the first-exam average is below 60, strongly recommend `switch_to_first_exam_only`. Do not hide the failure risk behind 중개사법 or second-exam strengths.
+
+## Operating Flow
 
 1. Read the current operating files before making changes:
    - `study_plan.md`
@@ -17,36 +24,39 @@ Run a manual Codex operating system for the Korean licensed real estate agent ex
    - `first_principles.md`
    - `mock_results.md` when relevant
    - recent files in `daily_logs/`
-2. If files do not exist yet, create only the minimum Markdown files needed for today. Use `references/markdown-schemas.md`.
-3. Parse the user's daily input: date, start time, end time, units studied, wrong-answer photos or numbers, and any explicit questions.
-4. Label each wrong answer as `W1`, `W2`, `W3`, etc. Preserve the user's wording and uncertainty.
-5. Match each wrong answer to an existing `question_id` when possible. If source matching fails, mark it `needs_source` and do not add it to reissue.
-6. Classify the mistake into one or more micro-skills. Keep the tag practical enough to select existing past questions.
-7. Draft a first principle only when the same trap is likely to recur. Link at most one first principle per wrong answer.
-8. Update the review queue using `references/scheduler.md`.
-9. Calculate review debt and decide whether new study is locked.
-10. Generate tomorrow's plan: review first, then new study only if unlocked.
-11. Answer only the questions the user explicitly asked. Use sources and mark verification status.
+2. If files do not exist yet, create only the minimum Markdown files needed for today using `references/markdown-schemas.md`.
+3. Apply the minimal-input contract from `references/operating-rules.md`.
+4. Process wrong answers through source matching, micro-skill classification, first-principle review, scheduling, review-debt calculation, and tomorrow planning.
+5. Answer only the questions the user explicitly asked. Use sources and mark verification status.
 
 ## Reference Routing
 
-- Read `references/operating-rules.md` for non-negotiable rules, especially no-new-question policy.
+- Read `references/operating-rules.md` for daily input, daily duties, non-negotiable rules, and anti-patterns.
 - Read `references/markdown-schemas.md` when creating or updating operating files.
-- Read `references/scheduler.md` when updating review items, statuses, due dates, or lock decisions.
-- Read `references/subject-selectors.md` when choosing which existing past questions to reissue.
+- Read `references/scheduler.md` when updating review items, statuses, due dates, debt, lock decisions, or rebuild decisions.
+- Read `references/subject-selectors.md` when choosing existing past-exam questions for reissue.
 - Read `references/first-principles.md` when drafting, validating, versioning, or pruning first principles.
-- Read `references/recalibration.md` for weekly reviews, biweekly mock-result updates, and pass/fail gates.
-- Read `references/source-policy.md` when handling Q-Net, EBS, question IDs, source versions, hashes, or old-law risk.
+- Read `references/recalibration.md` for weekly reviews, biweekly mock-result updates, subject guardrails, and pass/fail risk decisions.
+- Read `references/source-policy.md` for allowed sources, local source-vault conventions, A/B reference mode, question IDs, answer keys, old-law risk, and reissue eligibility.
+
+## Source And Reissue Boundary
+
+- Prefer Q-Net official past exams, but allow EBS and identifiable user-uploaded past-exam materials under `references/source-policy.md`.
+- Do not reissue from memory, paraphrase, generated text, or unverified source matches.
+- Reissue eligibility is owned by `references/source-policy.md`: a question needs an allowed source/range, an existing `question_id`, verified answer/source handling, and stored canonical body/choices rendered from private source text.
+- Keep source vault material private. Do not put PDFs, extracted question bodies, choices, official answers, user photos, scores, or private study logs into public output or a public skill repo.
 
 ## Daily Output Shape
 
-Return a concise operating report:
+Return this concise operating report when closing or summarizing a study day. This is a response format, not a storage schema.
 
 ```md
 오늘 판정:
 - 복습 부채:
 - 신규 학습 가능 여부:
 - 가장 위험한 과목:
+- 전략 판정:
+- 주간 가드레일 상태:
 
 내일 계획:
 1.
@@ -69,8 +79,7 @@ Return a concise operating report:
 ## Hard Stops
 
 - Do not generate new exam questions.
-- Do not rewrite, paraphrase, or alter past-exam bodies, choices, or official answers.
-- Do not reissue a question without a verified existing `question_id`.
+- Do not rewrite, paraphrase, or alter past-exam bodies, choices, facts, numbers, or official answers.
+- Do not reissue a question unless `references/source-policy.md` says it is eligible.
 - Do not explain every wrong answer by default. Explain only when the user asks.
-- If review debt exceeds 60 minutes, lock new study and plan debt repayment first.
-- If an item lapses three times, mark it `rebuild` and review the micro-skill or selector rule.
+- If review debt or lapse rules lock new study under `references/scheduler.md`, plan debt repayment first.

@@ -57,7 +57,25 @@ Lock new study when:
 
 - total estimated review debt is over 60 minutes
 - more than 10 high-priority micro-skills are overdue
-- 민법 or 중개사법 has a core lapsed item that has not been handled
+- 민법 or 중개사법 has a core lapsed item that has not been handled in the current planning window
+- 공법 has a core lapsed item that threatens the 40-point floor
+
+## Weekly Subject Guardrails
+
+After due reviews, allocate new study by weekly guardrail gaps, current risk, and available energy. Do not force every strategic subject into every daily plan.
+
+Default weekly min/max guardrails:
+
+| Subject | Role | Min | Max |
+|---|---|---:|---:|
+| 민법 | first-exam defense | 20% | 35% |
+| 부동산학개론 | first-exam score source | 10% | 25% |
+| 중개사법 | second-exam high-score source | 10% | 25% |
+| 공법 | second-exam floor defense | 10% | 25% |
+| 공시법/세법 | second-exam maintenance | 10% | 25% |
+| 실전모의/오답 | score stabilization | 8% | 20% |
+
+If review debt allows only one new block, choose the biggest weekly shortfall unless a hard gate is failing. A failing hard gate overrides the normal min/max range until the risk is contained.
 
 ## Rebuild Trigger
 

@@ -12,6 +12,78 @@ Publicly viewable does not mean redistributable. Do not commit past-exam PDFs, e
 
 Do not use commercial commentary books, paid lecture materials, paid solution PDFs, or copyrighted private notes as bundled skill content.
 
+## Local Source Vault
+
+Official source files may be stored in a private local vault outside the public skill repository.
+
+Current workspace convention:
+
+```text
+source-vault/
+  raw/qnet/real-estate-agent/2016-2025/
+  manifest/qnet_real_estate_agent_recent10_source_exams.jsonl
+  manifest/question_index.jsonl
+  manifest/answer_key.jsonl
+```
+
+Current Q-Net archive scope:
+
+- exam: 공인중개사
+- years: 2016-2025
+- question source page: `https://www.q-net.or.kr/cst003.do?id=cst00309&gSite=L&gId=08`
+- answer source page: `https://www.q-net.or.kr/cst003.do?id=cst00310&gSite=L&gId=08`
+- retrieved source version: `qnet-2026-06-29`
+
+The public skill repo should contain policies, schemas, and source-reference rules only. It should not contain raw PDFs, ZIPs, extracted question bodies, extracted choices, official answer tables, user-uploaded photos, or private study logs.
+
+## Reference Mode
+
+Use this phased source strategy:
+
+- A mode: keep a full 10-year question-level index and answer key, but no canonical question text.
+- B mode: extract canonical body/choices only for questions the learner actually missed.
+- Expansion rule: after several operating cycles, expand B-mode canonical extraction first for subjects with repeated wrong-answer density.
+
+Current A-mode files:
+
+- `source-vault/manifest/question_index.jsonl`
+- `source-vault/manifest/answer_key.jsonl`
+
+`question_index.jsonl` is generated for all 2016-2025 official Q-Net questions. `answer_key.jsonl` is generated from official answer PDFs. For 2016-2021, both A/B forms are indexed. For 2022-2025, form type is `null`. Rows with `manual_override` in `answer_key.jsonl` were visually checked against the official PDF cell after machine extraction.
+
+B-mode canonical extraction procedure:
+
+1. Match the wrong answer to `question_index.jsonl`.
+2. Confirm the official answer in `answer_key.jsonl`.
+3. Extract canonical body/choices only for that `question_id` from the verified official source.
+4. Store the canonical text privately and immutably with an official text hash.
+5. Add the item to reissue only after the canonical text is verified.
+
+Each file-level manifest row should include:
+
+- `source_exam_id`
+- `source_version`
+- `year`
+- `round`
+- `kind`
+- `title`
+- `provider`
+- `source_type`
+- `source_url`
+- `detail_artl_seq`
+- `file_seq`
+- `original_file_name`
+- `raw_file_path`
+- `file_sha256`
+- `file_size_bytes`
+- `retrieved_at`
+- `license_scope`
+- `redistribution_allowed`
+- `verification_status`
+- `immutable: true`
+
+External outputs should cite only source IDs, year/round/subject/question number, and short hashes. Do not paste full official question text unless the user is working inside the private local study session and source display is necessary.
+
 ## Question ID
 
 Use stable IDs for existing past-exam questions.
@@ -19,9 +91,9 @@ Use stable IDs for existing past-exam questions.
 Example:
 
 ```text
-REA-2025-1-LAW-001
-REA-2024-2-BROKER-018
-REA-2023-2-TAX-033
+REA-2025-R36-P1-S1-Q001
+REA-2020-R31-A-P2-S2-Q029
+REA-2016-R27-B-P2-UNIFIED-Q081
 ```
 
 Each stored question should have:

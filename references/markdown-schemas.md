@@ -43,6 +43,7 @@ Codex 처리:
 - 생성/갱신한 파일:
 - 신규 학습 잠금:
 - 내일 최우선:
+- 전략 판정:
 ```
 
 ## Wrong Answers
@@ -128,11 +129,31 @@ Codex 처리:
 ```md
 # Study Plan
 
+## Strategy
+
+- mode: 300h_conditional_same_year
+- target_scores:
+  - 부동산학개론:
+  - 민법:
+  - 중개사법:
+  - 공법:
+  - 공시법+세법:
+- current_track: keep_dual_track | keep_dual_track_reduced_scope | switch_to_first_exam_only
+- week8_cutoff_decision:
+- weekly_min_max_guardrails:
+  - 민법:
+  - 부동산학개론:
+  - 중개사법:
+  - 공법:
+  - 공시법+세법:
+  - 실전모의/오답:
+
 ## Today
 
 - review debt:
 - new study lock:
 - priority subjects:
+- weekly_guardrail_status:
 
 ## Tomorrow
 
@@ -145,6 +166,13 @@ Codex 처리:
 - milestone:
 - risk:
 - next recalibration:
+- next_two_week_allocation:
+  - 민법:
+  - 부동산학개론:
+  - 중개사법:
+  - 공법:
+  - 공시법+세법:
+  - 실전모의/오답:
 ```
 
 ## Mock Results
@@ -163,6 +191,46 @@ Codex 처리:
   - 세법:
 - wrong_answer_ids:
 - time_shortage:
-- decision: keep_dual_track | warn | switch_to_first_exam_only
+- decision: keep_dual_track | warn_dual_track | keep_dual_track_reduced_scope | switch_to_first_exam_only | rebalance_subject_time
 - next_two_week_adjustment:
+- next_two_week_allocation:
+  - 민법:
+  - 부동산학개론:
+  - 중개사법:
+  - 공법:
+  - 공시법:
+  - 세법:
+  - 실전모의/오답:
+- next_two_week_guardrails:
+  - 민법:
+  - 부동산학개론:
+  - 중개사법:
+  - 공법:
+  - 공시법+세법:
+  - 실전모의/오답:
+- week8_cutoff_decision:
+```
+
+## Weekly Review
+
+```md
+## {week_start} - {week_end}
+
+- total_study_minutes:
+- review_debt_trend:
+- repeated_wrong_patterns:
+- subject_role_status:
+  - 민법 first-exam defense:
+  - 부동산학개론 score-source:
+  - 중개사법 high-score:
+  - 공법 floor-defense:
+  - 공시법/세법 maintenance:
+- hard_gate_status:
+  - Week 4 민법 40:
+  - Week 6 1차 평균 55:
+  - Week 8 1차 평균 60:
+  - Week 10 공법 40:
+  - Week 11 중개사법 70:
+- next_week_lock_risks:
+- decision:
 ```
